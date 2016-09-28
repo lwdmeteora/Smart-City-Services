@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+
+  RewriteEngine On
+  
+  # Remove index.php from url
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.php [QSA,NC]
+  
+  # Apache fix for missing headers
+  RewriteCond %{HTTP:Authorization} ^(.*)
+  RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+  
+  #RewriteCond %{REQUEST_FILENAME} !-f
+  #RewriteCond %{REQUEST_FILENAME} !-d
+  #RewriteRule ^ .php [QSA,NC,L]
+  
+</IfModule>

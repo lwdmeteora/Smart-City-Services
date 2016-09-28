@@ -1,0 +1,35 @@
+<IfModule mod_rewrite.c>
+
+  Options +FollowSymLinks -MultiViews
+  RewriteEngine On
+  RewriteBase /SmartCityService/
+
+  # remove .php; use THE_REQUEST to prevent infinite loops
+  RewriteCond %{HTTP_HOST} ^xlab\.nhl\.nl
+  RewriteCond %{THE_REQUEST} ^GET\ (.*)\.php\ HTTP
+  RewriteRule (.*)\.php$ $1 [R=301]
+
+  # remove index
+  RewriteRule (.*)index$ $1 [R=301]
+
+  # remove slash if not directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} /$
+  RewriteRule (.*)/ $1 [R=301]
+
+  ## add .php to access file, but don't redirect
+  ##RewriteCond %{REQUEST_FILENAME}.php -f
+  ##RewriteCond %{REQUEST_URI} !/$
+  ##RewriteRule (.*) $1\.php [L]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+  RewriteRule ^(.*)$ $1.php [L,QSA]
+
+</IfModule>
+
+# css through php
+# handler for phpsuexec..
+#<FilesMatch "\.(css|style)$">
+# SetHandler application/x-httpd-php
+#</FilesMatch>
